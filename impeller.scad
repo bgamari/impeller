@@ -1,6 +1,6 @@
 // impeller parameters
-cup_diam = 20;
-cup_wall_thickness = 1.5;
+cup_diam = 25;
+cup_wall_thickness = 2;
 impeller_r = 30;
 n_cups = 4;
 rod_r = 3;
@@ -8,7 +8,8 @@ brace_r = 2;
 standoff_h = 2*rod_r + 2;
 
 // impeller mount parameters
-mount_wall_thickness = 3;
+mount_wall_thickness = 5;
+mount_depth = 20;
 
 // common parameters
 axle_r = 3/2;
@@ -57,7 +58,6 @@ module impeller() {
 module mount() {
     mount_length = impeller_r + cup_diam/2 + 2*axle_r;
     mount_h = 2*mount_wall_thickness + cup_diam;
-    mount_depth = 10;
 
     difference() {
         union() {
@@ -84,4 +84,5 @@ module assembly() {
     %mount($fn=40);
 }
 
+//impeller($fn=20);
 assembly();
