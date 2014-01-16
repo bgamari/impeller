@@ -1,6 +1,6 @@
 // impeller parameters
 cup_diam = 25;
-cup_wall_thickness = 2;
+cup_wall_thickness = 2.5;
 impeller_r = 30;
 n_cups = 4;
 rod_r = 3;
@@ -37,8 +37,8 @@ module cup() {
         // Cut out interior
         translate([impeller_r, 0, 0]) {
             sphere(r=(cup_diam-cup_wall_thickness)/2);
-            translate([-cup_diam,0,-cup_diam])
-            cube([2*cup_diam, 2*cup_diam, 2*cup_diam]);
+            translate([-cup_diam/2,0,-cup_diam/2])
+            cube([cup_diam, cup_diam, cup_diam]);
         }
     }
 }
@@ -94,7 +94,7 @@ module tube(r_outer, r_inner, h) {
 }
     
 module print_plate1() {
-    impeller($fn=20);
+    impeller($fn=30);
 
     translate([0, 0, -cup_diam/2]) {
         // raft
