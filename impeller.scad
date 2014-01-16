@@ -14,6 +14,7 @@ mount_depth = 20;
 // common parameters
 axle_r = 3/2;
 axle_h = 14;
+layer_height = 0.35;
 
 module cup() {
     difference() {
@@ -84,5 +85,31 @@ module assembly() {
     %mount($fn=40);
 }
 
-//impeller($fn=20);
-assembly();
+module tube(r_outer, r_inner, h) {
+    difference() {
+        cylinder(r=r_outer, h=h);
+        translate([0, 0, -1])
+        cylinder(r=r_inner, h=h+2);
+    }
+}
+    
+module print_plate1() {
+    impeller($fn=20);
+
+    translate([0, 0, -cup_diam/2]) {
+        // raft
+        cylinder(r=impeller_r+10, h=layer_height);
+
+        // support for rods 
+        tube(axle_r, axle_r-0.2, cup_diam/2 - rod_r);
+
+        // support for braces
+        for (i = [0:n_cups])
+        rotate(360/n_cups*(i+1/2))
+        translate([15, 0, 0])
+        tube(brace_r, brace_r-0.2, cup_diam/2 - brace_r);
+    }
+}
+
+print_plate1();
+//assembly();
