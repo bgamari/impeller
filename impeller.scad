@@ -1,20 +1,25 @@
 // impeller parameters
-cup_diam = 25;
-cup_wall_thickness = 2.5;
+cup_diam = 30;
+cup_wall_thickness = 3;
 impeller_r = 30;
 n_cups = 4;
 rod_r = 3;
 brace_r = 2;
-standoff_h = 2*rod_r + 2;
+standoff_h = 2*rod_r + 3;
 
 // impeller mount parameters
 mount_wall_thickness = 5;
 mount_depth = 20;
+mount_room = 4;
 
 // common parameters
 axle_r = 3/2;
-axle_h = 14;
+axle_h = 16;
 layer_height = 0.35;
+
+// derived quantities for mount
+mount_length = impeller_r + cup_diam/2 + 2*axle_r + 4;
+mount_h = 2*mount_wall_thickness + cup_diam + 2*mount_room;
 
 module cup() {
     difference() {
@@ -53,13 +58,11 @@ module impeller() {
     // axle
     cylinder(r=axle_r, h=axle_h, center=true);
 
+    // stand-off
     cylinder(r=2*axle_r, h=standoff_h, center=true);
 }
 
 module mount() {
-    mount_length = impeller_r + cup_diam/2 + 2*axle_r + 4;
-    mount_h = 2.5*mount_wall_thickness + cup_diam;
-
     difference() {
         union() {
             cylinder(r=mount_depth/2, h=mount_h, center=true);
@@ -68,13 +71,13 @@ module mount() {
         }
 
         // cut out for rod
-        cube([2*impeller_r, 2*mount_depth, 3*rod_r], center=true);
+        cube([2*impeller_r, 2*mount_depth, 2*rod_r + mount_room], center=true);
 
         // cut out for cup
         rotate_extrude()
         translate([impeller_r, 0])
         rotate([90,0])
-        circle(r=cup_diam/2 + 2, h=2*mount_depth, center=true);
+        circle(r=cup_diam/2 + mount_room, h=2*mount_depth, center=true);
 
         // axle
         cylinder(r=1.1 * axle_r, h=2*mount_h, center=true);
@@ -101,13 +104,13 @@ module print_plate1() {
         // raft
         cylinder(r=impeller_r+10, h=layer_height);
 
-        // support for rods 
-        tube(axle_r, axle_r-0.3, cup_diam/2 - rod_r);
+        // support for axle 
+        tube(axle_r-0.3, axle_r-0.3-0.3, cup_diam/2 - rod_r);
 
         // support for braces
         for (i = [0:n_cups])
         rotate(360/n_cups*(i+1/2))
-        translate([21, 0, 0])
+        translate([16, 0, 0]) // magic number
         tube(brace_r, brace_r-0.3, cup_diam/2 - brace_r);
     }
 }
@@ -117,7 +120,7 @@ module print_plate2() {
     mount($fn=40);
 }
 
-//print_plate1();
-print_plate2();
+print_plate1();
+//print_plate2();
 
 //assembly();
