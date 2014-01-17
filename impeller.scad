@@ -94,22 +94,28 @@ module tube(r_outer, r_inner, h) {
 }
     
 module print_plate1() {
-    impeller($fn=30);
+    impeller($fn=40);
 
-    translate([0, 0, -cup_diam/2]) {
+    translate([0, 0, -cup_diam/2], $fn=10) {
         // raft
         cylinder(r=impeller_r+10, h=layer_height);
 
         // support for rods 
-        tube(axle_r, axle_r-0.2, cup_diam/2 - rod_r);
+        tube(axle_r, axle_r-0.3, cup_diam/2 - rod_r);
 
         // support for braces
         for (i = [0:n_cups])
         rotate(360/n_cups*(i+1/2))
-        translate([15, 0, 0])
-        tube(brace_r, brace_r-0.2, cup_diam/2 - brace_r);
+        translate([21, 0, 0])
+        tube(brace_r, brace_r-0.3, cup_diam/2 - brace_r);
     }
 }
 
-print_plate1();
+module print_plate2() {
+    mount($fn=40);
+}
+
+//print_plate1();
+print_plate2();
+
 //assembly();
