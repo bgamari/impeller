@@ -1,7 +1,7 @@
 // impeller parameters
-cup_diam = 30;
-cup_wall_thickness = 4;
-impeller_r = 40;
+cup_diam = 25;
+cup_wall_thickness = 2.5;
+impeller_r = 30;
 n_cups = 4;
 rod_r = 3;
 brace_r = 2;
