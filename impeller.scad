@@ -112,6 +112,7 @@ module print_plate1() {
 }
 
 module print_plate2() {
+    rotate([0, 90, 0])
     mount($fn=40);
 }
 
