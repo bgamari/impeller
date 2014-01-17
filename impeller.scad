@@ -57,8 +57,8 @@ module impeller() {
 }
 
 module mount() {
-    mount_length = impeller_r + cup_diam/2 + 2*axle_r;
-    mount_h = 2*mount_wall_thickness + cup_diam;
+    mount_length = impeller_r + cup_diam/2 + 2*axle_r + 4;
+    mount_h = 2.5*mount_wall_thickness + cup_diam;
 
     difference() {
         union() {
@@ -71,9 +71,10 @@ module mount() {
         cube([2*impeller_r, 2*mount_depth, 3*rod_r], center=true);
 
         // cut out for cup
-        translate([impeller_r, 0, 0])
-        rotate([90,0,0])
-        cylinder(r=cup_diam/2 + 1, h=2*mount_depth, center=true);
+        rotate_extrude()
+        translate([impeller_r, 0])
+        rotate([90,0])
+        circle(r=cup_diam/2 + 2, h=2*mount_depth, center=true);
 
         // axle
         cylinder(r=1.1 * axle_r, h=2*mount_h, center=true);
@@ -82,7 +83,7 @@ module mount() {
     
 module assembly() {
     impeller($fn=36);
-    %mount($fn=40);
+    mount($fn=40);
 }
 
 module tube(r_outer, r_inner, h) {
