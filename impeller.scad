@@ -11,6 +11,12 @@ standoff_h = 2*rod_r + 3;
 mount_wall_thickness = 5;
 mount_depth = 20;
 mount_room = 4;
+mount_top = 6; // thickness of mounting surface
+
+// reed switch dimensions
+reed_length = 17;
+reed_depth = 3;
+reed_height = 2.3;
 
 // common parameters
 axle_r = 3/2;
@@ -18,7 +24,7 @@ axle_h = 16;
 layer_height = 0.35;
 
 // derived quantities for mount
-mount_length = impeller_r + cup_diam/2 + 2*axle_r + 4;
+mount_length = impeller_r + cup_diam/2 + 2*axle_r + mount_top;
 mount_h = 2*mount_wall_thickness + cup_diam + 2*mount_room;
 
 module cup() {
@@ -81,6 +87,24 @@ module mount() {
 
         // axle
         cylinder(r=1.1 * axle_r, h=2*mount_h, center=true);
+
+        // screw holes
+        for (s = [-1,+1])
+        translate([mount_h, 0, s*mount_depth/2])
+        rotate([0, 90, 0]) {
+            cylinder(r=(3+0.2)/2, h=20, center=true);
+            translate([0, 0, -2])
+            cylinder(r=(5.6+0.2)/2, h=10, center=true);
+        }
+
+        // reed switch hole
+        translate([mount_length - mount_top, 5, 0])
+        cube([2*reed_height, reed_depth, reed_length+2], center=true);
+
+        // reed switch wire hole
+        translate([mount_length - mount_top, 5, 20/2 - 1.5])
+        rotate([-90,0,0])
+        cylinder(r=3/2, h=10);
     }
 }
     
@@ -120,7 +144,7 @@ module print_plate2() {
     mount($fn=40);
 }
 
-print_plate1();
-//print_plate2();
+//print_plate1();
+print_plate2();
 
 //assembly();
