@@ -8,8 +8,8 @@ brace_r = 2;
 standoff_h = 2*rod_r + 3;
 
 // impeller mount parameters
-mount_wall_thickness = 5;
-mount_depth = 20;
+mount_wall_thickness = 7;
+mount_depth = 30;
 mount_room = 4;
 mount_top = 6; // thickness of mounting surface
 
