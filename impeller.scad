@@ -112,10 +112,11 @@ module mount(simple=false) {
         // screw holes
         for (s = [-1,+1])
         translate([mount_h, 0, s*mount_depth/2])
-        rotate([0, 90, 0]) {
-            cylinder(r=(3+0.2)/2, h=20, center=true);
-            translate([0, 0, -2])
-            cylinder(r=(5.6+0.2)/2, h=10, center=true);
+        rotate([0, -90, 0]) {
+            translate([0, 0, -10])
+            cylinder(r=(3+0.2)/2, h=20);
+            translate([0, 0, 3])
+            cylinder(r=(5.6+0.2)/2, h=20);
         }
 
         // reed switch hole
