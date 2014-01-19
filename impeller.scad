@@ -10,7 +10,7 @@ standoff_h = 2*rod_r + 3;
 // impeller mount parameters
 mount_wall_thickness = 7;
 mount_depth = 30;
-mount_room = 4;
+mount_room = 3; // room between cup and mount
 mount_top = 6; // thickness of mounting surface
 
 // reed switch dimensions
