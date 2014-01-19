@@ -155,7 +155,7 @@ module print_plate1() {
         // support for braces
         for (i = [0:n_cups])
         rotate(360/n_cups*(i+1/2))
-        translate([16, 0, 0]) // magic number
+        translate([14, 0, 0]) // magic number
         tube(brace_r, brace_r-0.3, cup_diam/2 - brace_r);
     }
 }
