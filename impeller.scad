@@ -20,7 +20,7 @@ reed_height = 2.3;
 
 // common parameters
 axle_r = 4/2;
-axle_h = 16;
+axle_h = 15;
 layer_height = 0.35;
 
 // derived quantities for mount
