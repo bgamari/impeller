@@ -147,7 +147,7 @@ module print_plate1() {
 
     translate([0, 0, -cup_diam/2], $fn=10) {
         // raft
-        cylinder(r=impeller_r+10, h=layer_height);
+        cylinder(r=impeller_r+15, h=layer_height);
 
         // support for axle 
         tube(axle_r-0.3, axle_r-0.3-0.3, cup_diam/2 - rod_r);
