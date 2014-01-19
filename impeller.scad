@@ -68,12 +68,33 @@ module impeller() {
     cylinder(r=2*axle_r, h=standoff_h, center=true);
 }
 
-module mount() {
+module half_sphere(r) {
+    difference() {
+        sphere(r, center=true);
+        translate([0, 0, -r])
+        cube([3*r, 3*r, 2*r], center=true);
+    }
+}
+    
+module mount(simple=false) {
+    a = mount_top + cup_diam/2 + mount_room;
     difference() {
         union() {
-            cylinder(r=mount_depth/2, h=mount_h, center=true);
-            translate([mount_length/2, 0, 0])
-            cube([mount_length, mount_depth, mount_h], center=true);
+            if (!simple) {
+                translate([mount_length - a, 0, 0])
+                scale([mount_length - a + 10, mount_depth/2, mount_h/2])
+                rotate([0,-90,0])
+                half_sphere(r=1, center=true);
+
+                translate([mount_length, 0, 0])
+                rotate([0,-90,0])
+                scale([mount_h/2, mount_depth/2, 1])
+                cylinder(r=1, h=a);
+            } else {
+                cylinder(r=mount_depth/2, h=mount_h, center=true);
+                translate([mount_length/2, 0, 0])
+                cube([mount_length, mount_depth, mount_h], center=true);
+            }
         }
 
         // cut out for rod
