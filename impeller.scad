@@ -36,9 +36,9 @@ module cup() {
 
             // brace
             translate([impeller_r, 0, 0])
-            rotate([0,0,-45-90-15])
+            rotate([0,0,-135-18])
             rotate([0,90,0])
-            cylinder(r=brace_r, h=2*impeller_r*sin(360/n_cups/2));
+            cylinder(r=brace_r, h=2*impeller_r*sin(360/n_cups/2) - 5);
 
             // rod to center
             rotate([0,90,0])
