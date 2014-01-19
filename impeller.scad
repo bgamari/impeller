@@ -157,6 +157,17 @@ module print_plate1() {
         rotate(360/n_cups*(i+1/2))
         translate([14, 0, 0]) // magic number
         tube(brace_r, brace_r-0.3, cup_diam/2 - brace_r);
+
+        // support for cup
+        for (i = [0:n_cups])
+        rotate(360/n_cups*i)
+        translate([impeller_r, 0, 0])
+        difference() {
+            translate([0, -7, 0])
+            tube(2, 2-0.3, 4);
+            translate([0, 0, cup_diam/2])
+            sphere(r=cup_diam/2);
+        }
     }
 }
 
