@@ -1,6 +1,6 @@
 // impeller parameters
 cup_diam = 30;
-cup_wall_thickness = 3;
+cup_wall_thickness = 3.2;
 impeller_r = 30;
 n_cups = 4;
 rod_r = 3;
@@ -22,6 +22,9 @@ reed_height = 2.3;
 axle_r = 4/2;
 axle_h = 15;
 layer_height = 0.35;
+
+// printer parameters
+xy_res = 0.2;
 
 // derived quantities for mount
 mount_length = impeller_r + cup_diam/2 + 2*axle_r + mount_top;
@@ -135,11 +138,11 @@ module assembly() {
     mount($fn=40);
 }
 
-module tube(r_outer, r_inner, h) {
+module tube(r_outer, thickness, h) {
     difference() {
         cylinder(r=r_outer, h=h);
         translate([0, 0, -1])
-        cylinder(r=r_inner, h=h+2);
+        cylinder(r=r_outer - thickness, h=h+2);
     }
 }
     
@@ -151,23 +154,24 @@ module print_plate1() {
         cylinder(r=impeller_r+15, h=layer_height);
 
         // support for axle 
-        tube(axle_r-0.3, axle_r-0.3-0.3, cup_diam/2 - rod_r);
+        tube(axle_r-0.5, xy_res, cup_diam/2 - rod_r - 0.5);
 
         // support for braces
         for (i = [0:n_cups])
         rotate(360/n_cups*(i+1/2))
         translate([14, 0, 0]) // magic number
-        tube(brace_r, brace_r-0.3, cup_diam/2 - brace_r);
+        tube(brace_r, xy_res, cup_diam/2 - brace_r);
 
         // support for cup
         for (i = [0:n_cups])
         rotate(360/n_cups*i)
         translate([impeller_r, 0, 0])
-        difference() {
-            translate([0, -7, 0])
-            tube(2, 2-0.3, 4);
+        #difference() {
+            translate([0, -8, 0])
+            tube(3, xy_res, cup_diam/2);
+
             translate([0, 0, cup_diam/2])
-            sphere(r=cup_diam/2);
+            sphere(r=cup_diam/2 + 0.5);
         }
     }
 }
@@ -177,7 +181,9 @@ module print_plate2() {
     mount($fn=40);
 }
 
-//print_plate1();
-print_plate2();
+print_plate1();
+//print_plate2();
+
+//projection(cut=true) rotate([90,0,0]) mount($fn=40);
 
 //assembly();
