@@ -28,7 +28,7 @@ rodaxel_h=36;
 topplate_r=20;
 topplate_h=3;
 case_h=20;
-case_r=41;
+case_r=42;
 cap_r=56/2;
 
 magnet_h=1;
@@ -144,7 +144,7 @@ module bottom_case() {
         // circular groove to bring out the reed switch cable
         translate([impeller_r, 0, -rodaxel_h/2-0.66])
         rotate_extrude()
-        translate([reed_length/2,0])
+        translate([reed_length/2+1.2,0])
         circle(1);
         
         // cabel connection of reed switch towards cap
