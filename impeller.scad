@@ -31,8 +31,8 @@ case_h=20;
 case_r=42;
 cap_r=56/2;
 
-magnet_h=1;
-magnet_r=1.5 + 0.5;
+magnet_h=2;
+magnet_r=3/2 + 0.5;
 
 xy_res = 0.2;
 
@@ -46,10 +46,10 @@ module cup() {
             difference(){
                 // cup body
                 translate([impeller_r, 0, 0])
-                sphere(r=cup_diam/2);
+                sphere(r=cup_diam/2, $fn=$fn*2);
     
                 // bed for the magnet
-                translate([impeller_r,-2, -impeller_r/2+1])
+                translate([impeller_r, -3, -impeller_r/2+1])
                 cylinder(r=magnet_r, h=magnet_h);
             }
 
@@ -62,44 +62,33 @@ module cup() {
             // rod to center
             rotate([0,90,0])
             cylinder(r=rod_r, h=impeller_r); 
-
-         
-
         }
-
-        // axle
-        cylinder(r=1.1 * axle_r, h=2*mount_h, center=true);
 
         // Cut out interior
         translate([impeller_r, 0, 0]) {
-            sphere(r=(cup_diam-cup_wall_thickness)/2);
+            sphere(r=(cup_diam-cup_wall_thickness)/2, $fn=$fn*2);
+
             translate([-cup_diam/2,0,-cup_diam/2])
             cube([cup_diam, cup_diam, cup_diam]);
-        }
-
-        // magnet
-        color([1,0,0]) {
-            translate([impeller_r,-2, -impeller_r/2 +1])
-            cylinder(r=magnet_r, h=magnet_h);
         }
     }
 }
 
 module impeller() {
-    for (i = [1:n_cups]) {
-        rotate(i * 360 / n_cups) {
-            cup();
-        }
-    }
-
     difference(){
-        // stand-off
-        cylinder(r=2*axle_r, h=standoff_h, center=true);
+        union() {
+            for (i = [1:n_cups]) {
+                rotate(i * 360 / n_cups)
+                cup();
+            }
+
+            // stand-off
+            cylinder(r=2*axle_r, h=standoff_h, center=true);
+        }
 
         // axle
         cylinder(r=1.1*axle_r, h=rodaxel_h, center=true);
     }
-
 }
 
 module bottom_case() {
@@ -145,11 +134,11 @@ module bottom_case() {
         translate([reed_length/2+1.2,0])
         circle(1);
         
-        // cabel connection of reed switch towards cap
+        // cable connection of reed switch towards cap
         connect([0,0,-rodaxel_h/2-case_h], [impeller_r-reed_length/2,0,-rodaxel_h/2], 3)
         circle(r=2);
 
-        // drill axel into the case
+        // drill axle into the case
         cylinder(r=1.1*axle_r, h=rodaxel_h+20, center=true);
     }
 }
@@ -192,7 +181,7 @@ module tube(r_outer, thickness, h) {
 }
     
 module print_plate1() {
-    impeller($fn=40);
+    impeller($fn=24);
 
     translate([0, 0, -cup_diam/2], $fn=10) {
         // raft
@@ -228,11 +217,6 @@ module print_plate2() {
     bottom_case($fn=40);
 }
 
-print_plate1();
-//print_plate2();
-
+//print_plate1();
+print_plate2();
 //assembly();
-//connect([0,0,0], [10,20,30])
-//circle(r=10);
-
-//rotate([0, 0, $t*-360]) impeller();
