@@ -34,6 +34,7 @@ cap_r=56/2;
 magnet_h=1;
 magnet_r=1.5 + 0.5;
 
+xy_res = 0.2;
 
 // derived quantities for mount
 mount_length = impeller_r + cup_diam/2 + 2*axle_r + mount_top;
@@ -181,12 +182,12 @@ module assembly() {
     bottom_case($fn=36);
 }
 
-module tube(r_outer, r_inner, h) {
+module tube(r_outer, thickness, h) {
     difference() {
         cylinder(r=r_outer, h=h);
 
         translate([0, 0, -1])
-        cylinder(r=r_inner, h=h+2);
+        cylinder(r=r_outer-thickness, h=h+2);
     }
 }
     
@@ -198,36 +199,39 @@ module print_plate1() {
         cylinder(r=impeller_r+15, h=layer_height);
 
         // support for axle 
-        tube(axle_r-0.3, axle_r-0.3-0.3, cup_diam/2 - rod_r);
+        tube(axle_r+xy_res, xy_res, cup_diam/2 - rod_r);
+        tube(2*axle_r-xy_res, xy_res, cup_diam/2 - rod_r);
 
         // support for braces
         for (i = [0:n_cups])
         rotate(360/n_cups*(i+1/2))
-        translate([14, 0, 0]) // magic number
-        tube(brace_r, brace_r-0.3, cup_diam/2 - brace_r);
+        translate([15, 0, 0]) // magic number
+        tube(brace_r, xy_res, cup_diam/2 - brace_r);
 
         // support for cup
         for (i = [0:n_cups])
         rotate(360/n_cups*i)
         translate([impeller_r, 0, 0])
         difference() {
-            translate([0, -7, 0])
-            tube(2, 2-0.3, 4);
+            for (theta = [-90:30:90])
+            rotate(theta)
+            translate([0, -cup_diam/2, 0])
+            cube([xy_res, cup_diam/2, cup_diam/2]);
+
             translate([0, 0, cup_diam/2])
-            sphere(r=cup_diam/2);
+            sphere(r=cup_diam/2 + 0.15, $fn=20);
         }
     }
 }
 
 module print_plate2() {
-    rotate([0, 90, 0])
-    mount($fn=40);
+    bottom_case($fn=40);
 }
 
-//print_plate1();
+print_plate1();
 //print_plate2();
 
-assembly();
+//assembly();
 //connect([0,0,0], [10,20,30])
 //circle(r=10);
 
