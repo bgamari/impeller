@@ -167,11 +167,13 @@ module print_plate1() {
         rotate(360/n_cups*i)
         translate([impeller_r, 0, 0])
         #difference() {
-            translate([0, -8, 0])
-            tube(3, xy_res, cup_diam/2);
+            for (theta = [-90:30:90])
+            rotate(theta)
+            translate([0, -cup_diam/2, 0])
+            cube([xy_res, cup_diam/2, cup_diam/2]);
 
             translate([0, 0, cup_diam/2])
-            sphere(r=cup_diam/2 + 0.5);
+            sphere(r=cup_diam/2 + 0.1, $fn=30);
         }
     }
 }
