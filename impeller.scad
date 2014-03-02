@@ -49,7 +49,7 @@ module cup() {
     
                 // bed for the magnet
                 translate([impeller_r,-2, -impeller_r/2+1])
-                    cylinder(r=magnet_r, h=magnet_h);
+                cylinder(r=magnet_r, h=magnet_h);
             }
 
             // brace
@@ -79,7 +79,7 @@ module cup() {
         // magnet
         color([1,0,0]) {
             translate([impeller_r,-2, -impeller_r/2 +1])
-                cylinder(r=magnet_r, h=magnet_h);
+            cylinder(r=magnet_r, h=magnet_h);
         }
     }
 }
@@ -91,13 +91,12 @@ module impeller() {
         }
     }
 
-    
     difference(){
-    // stand-off
-    cylinder(r=2*axle_r, h=standoff_h, center=true);
+        // stand-off
+        cylinder(r=2*axle_r, h=standoff_h, center=true);
 
-    // axle
-    cylinder(r=1.1*axle_r, h=rodaxel_h, center=true);
+        // axle
+        cylinder(r=1.1*axle_r, h=rodaxel_h, center=true);
     }
 
 }
@@ -108,7 +107,7 @@ module bottom_case() {
     bottom_case_plate_h=reed_height*2;
 
     // stand-off bottom  
-    difference(){
+    difference() {
         translate([0,0,-(standoff_h)/2-bottom_standoff_h/2 -bottom_standoff_diff])  
         cylinder(r2=2*axle_r, r1=6*axle_r, h=bottom_standoff_h, center=true);
 
@@ -116,25 +115,23 @@ module bottom_case() {
         cylinder(r=axle_r, h=rodaxel_h, center=true);
     }
     // fake axle, will be replace by screw
-    //% cylinder(r=axle_r, h=rodaxel_h, center=true);
-
+    //%cylinder(r=axle_r, h=rodaxel_h, center=true);
     
     // case
     difference() {
         translate([0,0,-(rodaxel_h/2+case_h/2)])	
         union() {
-            translate([0,0,(case_h-bottom_case_plate_h)/2]) cylinder(r=case_r, h=bottom_case_plate_h, center=true);
+            translate([0,0,(case_h-bottom_case_plate_h)/2])
+            cylinder(r=case_r, h=bottom_case_plate_h, center=true);
 
-            translate([0,0,-bottom_case_plate_h/2]) cylinder(r2=case_r, r1=cap_r, case_h-bottom_case_plate_h, center=true);
-
-            
+            translate([0,0,-bottom_case_plate_h/2])
+            cylinder(r2=case_r, r1=cap_r, case_h-bottom_case_plate_h, center=true);
     	}
-
         
         // reed switch bed in case
         translate([impeller_r, 0, -rodaxel_h/2-reed_height/2])
-            rotate([90,0,0]) rotate([0,90,0])
-                cube([2*reed_height, reed_depth, reed_length+2], center=true);
+        rotate([90,0,0]) rotate([0,90,0])
+        cube([2*reed_height, reed_depth, reed_length+2], center=true);
 
         // second reed switch bed in case
         translate([impeller_r, 0, -rodaxel_h/2-reed_height/2])
@@ -153,11 +150,7 @@ module bottom_case() {
 
         // drill axel into the case
         cylinder(r=1.1*axle_r, h=rodaxel_h+20, center=true);
-
-
     }
-
-    
 }
 
 module connect(r1, r2, extra=0) {
